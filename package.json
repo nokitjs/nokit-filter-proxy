@@ -1,6 +1,6 @@
 {
   "name": "nokit-filter-proxy",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "可以将指定的路径代理到指定的URL",
   "main": "index.js",
   "scripts": {
