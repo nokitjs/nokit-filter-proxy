@@ -1,0 +1,23 @@
+{
+    "port": 9000,
+    "handlers": {
+        "^/": "$./handlers/mvc"
+    },
+    "mvc": {
+        "routes": {
+            "/home": "./home",
+            "/": "./home",
+            "get /date": {
+                "view": "./date"
+            }
+        }
+    },
+    "filters": {
+        "^/": "../"
+    },
+    "proxy": {
+        "rules": {
+            "^/api": "http://localhost:8000"
+        }
+    }
+}
