@@ -17,7 +17,7 @@
     },
     "proxy": {
         "rules": {
-            "^/api /api": "http://ares2-api.jd.com/"
+            "^/": "https://jser.cc/"
         }
     }
 }

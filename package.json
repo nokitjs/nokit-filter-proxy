@@ -1,20 +1,24 @@
 {
-  "name": "nokit-filter-proxy",
-  "version": "0.0.2",
-  "description": "可以将指定的路径代理到指定的URL",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [
-    "nokit",
-    "nokitjs",
-    "filter",
-    "proxy"
-  ],
-  "author": "Houfeng",
-  "license": "MIT",
-  "dependencies": {
-    "http-proxy": "^1.13.2"
-  }
+    "name": "nokit-filter-proxy",
+    "version": "0.0.3",
+    "description": "nokit-filter-proxy",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/nokitjs/nokit-filter-proxy.git"
+    },
+    "keywords": [
+        "nokit",
+        "nokitjs",
+        "filter",
+        "proxy"
+    ],
+    "author": "Houfeng",
+    "license": "MIT",
+    "dependencies": {
+        "http-proxy": "^1.13.2"
+    }
 }

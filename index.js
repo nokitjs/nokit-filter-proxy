@@ -29,6 +29,9 @@ ProxyFilter.prototype.onRequest = function (context, next) {
             if (removeText) {
                 req.url = req.url.replace(removeText, "");
             }
+            if (req.url == "") {
+                req.url = "/";
+            }
             var target = self.configs.rules[expr];
             return self.proxy.web(req, res, {
                 target: target
