@@ -17,7 +17,7 @@
     },
     "proxy": {
         "rules": {
-            "^/": "https://jser.cc/"
+            "^/jser": "https://jser.cc/ /jser"
         }
     }
 }

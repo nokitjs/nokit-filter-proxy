@@ -22,21 +22,20 @@ ProxyFilter.prototype.onRequest = function (context, next) {
     var res = context.res,
         req = context.req;
     for (var expr in self.configs.rules) {
-        var exprParts = expr.split(' ');
-        var exprText = exprParts[0]
-        var removeText = exprParts[1];
-        if (new RegExp(exprText).test(req.url)) {
-            if (removeText) {
-                req.url = req.url.replace(removeText, "");
-            }
-            if (req.url == "") {
-                req.url = "/";
-            }
-            var target = self.configs.rules[expr];
-            return self.proxy.web(req, res, {
-                target: target
-            });
+        if (!(new RegExp(expr)).test(req.url)) return;
+        if (!self.configs.rules[expr]) return;
+        var ruleParts = self.configs.rules[expr].split(' ');
+        var target = ruleParts[0]
+        var removeText = ruleParts[1];
+        if (removeText) {
+            req.url = req.url.replace(removeText, "");
         }
+        if (req.url == "") {
+            req.url = "/";
+        }
+        return self.proxy.web(req, res, {
+            target: target
+        });
     }
     next();
 };
