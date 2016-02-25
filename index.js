@@ -22,8 +22,10 @@ ProxyFilter.prototype.onRequest = function (context, next) {
     var res = context.res,
         req = context.req;
     for (var expr in self.configs.rules) {
-        if (!(new RegExp(expr)).test(req.url)) return;
-        if (!self.configs.rules[expr]) return;
+        if (!(new RegExp(expr)).test(req.url) ||
+            !self.configs.rules[expr]) {
+            continue;
+        }
         var ruleParts = self.configs.rules[expr].split(' ');
         var target = ruleParts[0]
         var removeText = ruleParts[1];
