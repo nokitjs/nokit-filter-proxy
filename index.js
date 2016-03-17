@@ -2,7 +2,7 @@ var httpProxy = require("http-proxy");
 
 function ProxyFilter(server) {
     var self = this;
-    var utils = server.require("$./core/utils");
+    var utils = self.utils = server.require("$./core/utils");
     //读取配置
     self.configs = server.configs.proxy || {};
     self.configs.options = self.configs.options || {};
@@ -13,11 +13,22 @@ function ProxyFilter(server) {
         self.configs.options.changeOrigin = true;
     }
     self.configs.rules = self.configs.rules || {};
-    // 新建一个代理 Proxy Server 对象  
+    //新建一个代理 Proxy Server 对象  
     self.proxy = httpProxy.createProxyServer(self.configs.options);
+    //proxy req 
+    self.onProxyReqHandler = self.onProxyReqHandler.bind(self);
+    self.proxy.on("proxy", self.onProxyReqHandler);
 };
 
-ProxyFilter.prototype.onRequest = function (context, next) {
+ProxyFilter.prototype.onProxyReqHandler = function(proxyReq, req, res, options) {
+    var self = this;
+    if (!self.configs.headers) return;
+    self.utils.each(self.configs.headers, function(name, value) {
+        proxyReq.setHeader(name, value);
+    });
+};
+
+ProxyFilter.prototype.onRequest = function(context, next) {
     var self = this;
     var res = context.res,
         req = context.req;
