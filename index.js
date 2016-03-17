@@ -17,7 +17,7 @@ function ProxyFilter(server) {
     self.proxy = httpProxy.createProxyServer(self.configs.options);
     //proxy req 
     self.onProxyReqHandler = self.onProxyReqHandler.bind(self);
-    self.proxy.on("proxy", self.onProxyReqHandler);
+    self.proxy.on("proxyReq", self.onProxyReqHandler);
 };
 
 ProxyFilter.prototype.onProxyReqHandler = function(proxyReq, req, res, options) {

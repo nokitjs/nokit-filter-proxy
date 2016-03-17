@@ -16,8 +16,11 @@
         "^/": "../"
     },
     "proxy": {
+        "headers": {
+            "test": "test"
+        },
         "rules": {
-            "^/jser": "https://jser.cc/ /jser"
+            "^/": "https://jser.cc/"
         }
     }
 }
