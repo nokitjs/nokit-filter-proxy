@@ -1,6 +1,6 @@
 {
     "name": "nokit-filter-proxy",
-    "version": "0.0.6",
+    "version": "0.0.7",
     "description": "nokit-filter-proxy",
     "main": "index.js",
     "scripts": {
