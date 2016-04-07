@@ -1,26 +1,27 @@
 {
-    "port": 9000,
-    "handlers": {
-        "^/": "$./handlers/mvc"
-    },
-    "mvc": {
-        "routes": {
-            "/home": "./home",
-            "/": "./home",
-            "get /date": {
-                "view": "./date"
-            }
-        }
-    },
-    "filters": {
-        "^/": "../"
-    },
-    "proxy": {
-        "headers": {
-            "test": "test"
-        },
-        "rules": {
-            "^/": "https://jser.cc/"
-        }
+  "port": 9000,
+  "handlers": {
+    "^/": "$./handlers/mvc"
+  },
+  "mvc": {
+    "routes": {
+      "/home": "./home",
+      "/": "./home",
+      "get /date": {
+        "view": "./date"
+      }
     }
+  },
+  "filters": {
+    "^/": "../"
+  },
+  "proxy": {
+    "headers": {
+      "test": "test"
+    },
+    "rules": {
+      "^/": "https://jser.cc/",
+      "^/jser/(.*)": "https://jser.cc/"
+    }
+  }
 }

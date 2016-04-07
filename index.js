@@ -28,27 +28,20 @@ ProxyFilter.prototype.onProxyReqHandler = function(proxyReq, req, res, options) 
   });
 };
 
-ProxyFilter.prototype.parseRule = function(expr, target) {
+ProxyFilter.prototype.matchRule = function(url) {
   var self = this;
-  var targetParts = target.split(' ');
-  var target = targetParts[0]
-  var removeText = targetParts[1];
-  return {
-    "expr": expr,
-    "target": target,
-    "removeText": removeText
-  };
-};
-
-ProxyFilter.prototype.matchRuleExpr = function(url) {
-  var self = this;
-  var ruleExpr = null;
-  for (var expr in self.configs.rules) {
-    if ((new RegExp(expr)).test(url)) {
-      ruleExpr = expr
+  var rule = null;
+  self.utils.each(self.configs.rules, function(exprText, target) {
+    var expr = new RegExp(exprText);
+    if (expr.test(url)) {
+      var urlParts = expr.exec(url);
+      rule = {
+        url: urlParts.length > 1 ? urlParts[1] : url,
+        target: target
+      };
     }
-  }
-  return ruleExpr;
+  });
+  return rule;
 };
 
 ProxyFilter.prototype.onRequest = function(context, next) {
@@ -56,13 +49,9 @@ ProxyFilter.prototype.onRequest = function(context, next) {
   var res = context.res,
     req = context.req;
   //匹配规则表达式
-  var ruleExpr = self.matchRuleExpr(req.url);
-  if (!ruleExpr) return next();
-  //解析规则
-  var rule = self.parseRule(ruleExpr, self.configs.rules[ruleExpr]);
-  if (rule.removeText) {
-    req.url = req.url.replace(rule.removeText, "") || "/";
-  }
+  var rule = self.matchRule(req.url);
+  if (!rule) return next();
+  req.url = rule.url || "/";
   //代理请求
   self.proxy.web(req, res, {
     "target": rule.target
