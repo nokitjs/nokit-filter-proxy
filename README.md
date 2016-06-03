@@ -15,7 +15,7 @@
 
 示例二:
 
-替换 URL 中的 /jser 前缀
+不保留 URL 中的 /jser 前缀
 ```json
 {
   "filters": {
@@ -23,7 +23,7 @@
   },
   "proxy": {
     "rules": {
-      "^/jser": "https://jser.cc /jser"
+      "^/jser(.*)": "https://jser.cc"
     }
   }
 }
