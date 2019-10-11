@@ -20,18 +20,26 @@ function ProxyFilter(server) {
   self.proxy.on("proxyReq", self.onProxyReqHandler);
 };
 
-ProxyFilter.prototype.onProxyReqHandler = function(proxyReq, req, res, options) {
+ProxyFilter.prototype.onProxyReqHandler = function (proxyReq, req, res, options) {
   var self = this;
   if (!self.configs.headers) return;
-  self.utils.each(self.configs.headers, function(name, value) {
+  var symbols = Object.getOwnPropertySymbols(proxyReq.connection);
+  var innerReq = proxyReq.connection[symbols[symbols.length - 1]];
+  self.utils.each(self.configs.headers, function (name, value) {
     proxyReq.setHeader(name, value);
+    if (innerReq.headers) innerReq.headers[name] = value;
+    if (name === 'host') {
+      innerReq.host = value;
+      innerReq.hostname = value;
+      innerReq.servername = value;
+    }
   });
 };
 
-ProxyFilter.prototype.matchRule = function(url) {
+ProxyFilter.prototype.matchRule = function (url) {
   var self = this;
   var rule = null;
-  self.utils.each(self.configs.rules, function(exprText, target) {
+  self.utils.each(self.configs.rules, function (exprText, target) {
     var expr = new RegExp(exprText);
     if (expr.test(url)) {
       var urlParts = expr.exec(url);
@@ -44,7 +52,7 @@ ProxyFilter.prototype.matchRule = function(url) {
   return rule;
 };
 
-ProxyFilter.prototype.onRequest = function(context, next) {
+ProxyFilter.prototype.onRequest = function (context, next) {
   var self = this;
   var res = context.res,
     req = context.req;
